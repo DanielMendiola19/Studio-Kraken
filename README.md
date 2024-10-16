@@ -1,4 +1,4 @@
-# Studio-Kraken
+# Studio-de-tatuajes-Kraken
 Estudio de Tatuajes Kraken
 ## Descripcion
 | Integrantes | Función |
