@@ -31,9 +31,9 @@ if (isset($_SESSION['rol']) && $_SESSION['rol'] == 'admin') {
     <ul>
         <li><a href="index.php">Inicio</a></li>
         <li><a href="galeria.php">Galería</a></li>
-        <li><a href="#">Tatuadores</a></li>
-        <li><a href="#">Servicios</a></li>
-        <li><a href="#">Contacto</a></li>
+        <li><a href="tatuadores_cliente.php">Tatuadores</a></li>
+        <li><a href="servicios_cliente.php">Servicios</a></li>
+        <li><a href="contacto_cliente.php">Contacto</a></li>
         <li><a href="login.php">Acceso Admin</a></li>
     </ul>
 </nav>
