@@ -27,6 +27,7 @@
         <li><a href="login.php">Acceso Admin</a></li>
     </ul>
 </nav>
+
 <main>
     <div id="carouselExampleIndicators" class="carousel slide">
         <div class="carousel-indicators">
@@ -38,8 +39,12 @@
         <div class="carousel-inner">
 
         <?php
-        // Incluir el archivo de conexión
-        include 'connection.php';
+        // Incluir el archivo de conexión Singleton
+        include 'connection_singleton.php';
+
+        // Obtener la instancia única de la conexión
+        $db = Database::getInstance();
+        $conn = $db->getConnection();
 
         // Consulta para obtener todas las imágenes de tatuajes junto con sus IDs
         $stmt = $conn->prepare("SELECT id_tat, foto_del_diseño FROM tatuaje");
@@ -64,9 +69,6 @@
 
         // Cerrar la declaración
         $stmt->close();
-
-        // Cerrar la conexión
-        $conn->close();
         ?>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

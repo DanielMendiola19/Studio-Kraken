@@ -1,6 +1,6 @@
 <?php
-// Incluir el archivo de conexión
-include 'connection.php';
+// Incluir el archivo de conexión Singleton
+include 'connection_singleton.php';
 
 // Recuperar el ID del tatuaje desde la URL
 $id_tatuaje = isset($_GET['id']) ? $_GET['id'] : null;
@@ -10,6 +10,10 @@ $diseño = $tamaño = $zona_del_cuerpo = $nivel_de_detalle = $precio = $foto_del
 
 // Verificar si se proporcionó un ID de tatuaje
 if ($id_tatuaje !== null) {
+    // Obtener la instancia única de la conexión
+    $db = Database::getInstance();
+    $conn = $db->getConnection();
+
     // Consulta para obtener los detalles del tatuaje
     $stmt = $conn->prepare("SELECT diseño, tamaño, zona_del_cuerpo, nivel_de_detalle, precio, foto_del_diseño FROM tatuaje WHERE id_tat = ?");
     $stmt->bind_param("i", $id_tatuaje);
@@ -18,9 +22,6 @@ if ($id_tatuaje !== null) {
     $stmt->fetch();
     $stmt->close();
 }
-
-// Cerrar la conexión
-$conn->close();
 ?>
 
 <!DOCTYPE html>
