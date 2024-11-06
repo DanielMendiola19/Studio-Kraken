@@ -1,12 +1,11 @@
-<!-- citas.php -->
 <?php
 session_start();
 include 'connection.php';
 
 // Lógica para agregar una cita
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $cle_id = $_POST['cle_id'];
-    $tar_id_tar = $_POST['tar_id_tar'];
+    $cle_id = $_POST['cle_id'];  // ID del cliente
+    $tar_id_tar = $_POST['tar_id_tar'];  // ID del tatuador
     $fecha_y_hora = $_POST['fecha_y_hora'];
     $estado = $_POST['estado'];
 
@@ -47,6 +46,14 @@ if (isset($_GET['delete_id'])) {
     exit();
 }
 
+// Obtener todos los clientes para mostrarlos en el combobox
+$sql_clientes = "SELECT id, nombre FROM cliente";
+$result_clientes = $conn->query($sql_clientes);
+
+// Obtener todos los tatuadores para mostrarlos en el combobox
+$sql_tatuadores = "SELECT id_tar, nombre FROM tatuador";
+$result_tatuadores = $conn->query($sql_tatuadores);
+
 // Obtener todas las citas para mostrarlas en la tabla
 $result = $conn->query("SELECT * FROM cita");
 ?>
@@ -69,10 +76,36 @@ $result = $conn->query("SELECT * FROM cita");
 <form method="POST">
     <!-- Formulario para agregar/editar cita -->
     <input type="hidden" name="id_cia" value="<?php echo isset($_GET['edit_id']) ? $_GET['edit_id'] : ''; ?>">
-    <input type="number" name="cle_id" placeholder="ID Cliente" required>
-    <input type="number" name="tar_id_tar" placeholder="ID Tatuador" required>
+
+    <label for="cle_id">Cliente:</label>
+    <select name="cle_id" required>
+        <option value="">Seleccione Cliente</option>
+        <?php while ($row = $result_clientes->fetch_assoc()): ?>
+            <option value="<?php echo $row['id']; ?>" <?php echo isset($cliente) && $cliente['cle_id'] == $row['id'] ? 'selected' : ''; ?>>
+                <?php echo $row['nombre']; ?>
+            </option>
+        <?php endwhile; ?>
+    </select>
+
+    <label for="tar_id_tar">Tatuador:</label>
+    <select name="tar_id_tar" required>
+        <option value="">Seleccione Tatuador</option>
+        <?php while ($row = $result_tatuadores->fetch_assoc()): ?>
+            <option value="<?php echo $row['id_tar']; ?>" <?php echo isset($tatuador) && $tatuador['tar_id_tar'] == $row['id_tar'] ? 'selected' : ''; ?>>
+                <?php echo $row['nombre']; ?>
+            </option>
+        <?php endwhile; ?>
+    </select>
+
+    <label for="fecha_y_hora">Fecha y Hora:</label>
     <input type="datetime-local" name="fecha_y_hora" required>
-    <input type="text" name="estado" placeholder="Estado" required>
+
+    <label for="estado">Estado:</label>
+    <select name="estado" required>
+        <option value="Pendiente" <?php echo isset($cita) && $cita['estado'] == 'Pendiente' ? 'selected' : ''; ?>>Pendiente</option>
+        <option value="Realizado" <?php echo isset($cita) && $cita['estado'] == 'Realizado' ? 'selected' : ''; ?>>Realizado</option>
+    </select>
+
     <button type="submit">Guardar Cita</button>
 </form>
 

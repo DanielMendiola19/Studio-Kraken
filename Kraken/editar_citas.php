@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $cliente_id = $_POST['cliente_id'];
+        $cliente_id = $_POST['cle_id'];
         $tar_id_tar = $_POST['tar_id_tar'];
         $fecha_y_hora = $_POST['fecha_y_hora'];
         $estado = $_POST['estado'];
@@ -45,7 +45,6 @@ if (isset($_GET['id'])) {
         $update->bind_param("iissi", $cliente_id, $tar_id_tar, $fecha_y_hora, $estado, $id);
 
         if ($update->execute()) {
-            echo "Cita actualizada correctamente.";
             header("Location: citas.php");
             exit();
         } else {
@@ -57,8 +56,6 @@ if (isset($_GET['id'])) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -69,11 +66,45 @@ if (isset($_GET['id'])) {
 <body style='background-color: #b5dee9;'>   
     <h2>Editar Cita</h2>
     <form method="POST">
-        <!-- Cambié el nombre del campo a cliente_id -->
-        <input type="number" name="cliente_id" value="<?php echo $cita['cle_id']; ?>" required>
-        <input type="number" name="tar_id_tar" value="<?php echo $cita['tar_id_tar']; ?>" required>
+        <label for="cle_id">Cliente:</label>
+        <select name="cle_id" required>
+            <option value="">Seleccione Cliente</option>
+            <?php
+            // Obtener todos los clientes para el combobox
+            $result_clientes = $conn->query("SELECT id, nombre FROM cliente");
+            while ($row = $result_clientes->fetch_assoc()):
+                $selected = ($row['id'] == $cita['cle_id']) ? 'selected' : '';
+            ?>
+                <option value="<?php echo $row['id']; ?>" <?php echo $selected; ?>>
+                    <?php echo $row['nombre']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <label for="tar_id_tar">Tatuador:</label>
+        <select name="tar_id_tar" required>
+            <option value="">Seleccione Tatuador</option>
+            <?php
+            // Obtener todos los tatuadores para el combobox
+            $result_tatuadores = $conn->query("SELECT id_tar, nombre FROM tatuador");
+            while ($row = $result_tatuadores->fetch_assoc()):
+                $selected = ($row['id_tar'] == $cita['tar_id_tar']) ? 'selected' : '';
+            ?>
+                <option value="<?php echo $row['id_tar']; ?>" <?php echo $selected; ?>>
+                    <?php echo $row['nombre']; ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
+
+        <label for="fecha_y_hora">Fecha y Hora:</label>
         <input type="datetime-local" name="fecha_y_hora" value="<?php echo date('Y-m-d\TH:i', strtotime($cita['fecha_y_hora'])); ?>" required>
-        <input type="text" name="estado" value="<?php echo $cita['estado']; ?>" required>
+
+        <label for="estado">Estado:</label>
+        <select name="estado" required>
+            <option value="Pendiente" <?php echo $cita['estado'] == 'Pendiente' ? 'selected' : ''; ?>>Pendiente</option>
+            <option value="Realizado" <?php echo $cita['estado'] == 'Realizado' ? 'selected' : ''; ?>>Realizado</option>
+        </select>
+
         <button type="submit">Actualizar Cita</button>
     </form>
 </body>

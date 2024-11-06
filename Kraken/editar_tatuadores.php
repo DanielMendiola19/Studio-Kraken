@@ -1,4 +1,3 @@
-<!-- editar_tatuadores.php -->
 <?php
 session_start();
 include 'connection.php';
@@ -56,14 +55,27 @@ if (isset($_GET['id'])) {
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body style='background-color: #b5dee9;'>
+
 <div class="form-container">
     <h2>Editar Tatuador</h2>
 </div>
 
 <form method="POST">
+    <!-- Campo para el nombre -->
     <input type="text" name="nombre" placeholder="Nombre" value="<?php echo htmlspecialchars($tatuador['nombre']); ?>" required>
-    <input type="text" name="telefono" placeholder="Teléfono" value="<?php echo htmlspecialchars($tatuador['telefono']); ?>" required>
-    <input type="text" name="especialidad" placeholder="Especialidad" value="<?php echo htmlspecialchars($tatuador['especialidad']); ?>" required>
+    
+    <!-- Campo para el teléfono -->
+    <input type="tel" name="telefono" placeholder="Teléfono" value="<?php echo htmlspecialchars($tatuador['telefono']); ?>" required pattern="[0-9]{8}" title="Solo se permiten números (8 dígitos)">
+    
+    <!-- Campo para la especialidad (select con opciones preseleccionadas) -->
+    <label for="especialidad">Especialidad:</label>
+    <select name="especialidad" required>
+        <option value="Realista" <?php if ($tatuador['especialidad'] == 'Realista') echo 'selected'; ?>>Realista</option>
+        <option value="BlackWork" <?php if ($tatuador['especialidad'] == 'BlackWork') echo 'selected'; ?>>BlackWork</option>
+        <option value="Microrealismo" <?php if ($tatuador['especialidad'] == 'Microrealismo') echo 'selected'; ?>>Microrealismo</option>
+        <option value="Gótico" <?php if ($tatuador['especialidad'] == 'Gótico') echo 'selected'; ?>>Gótico</option>
+    </select>
+
     <button type="submit">Actualizar Tatuador</button>
 </form>
 

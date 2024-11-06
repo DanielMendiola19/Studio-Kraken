@@ -1,4 +1,3 @@
-<!-- tatuadores.php -->
 <?php
 session_start();
 include 'connection.php';
@@ -47,44 +46,55 @@ $result = $conn->query("SELECT * FROM tatuador");
     <link rel="stylesheet" href="css/estilo.css">
 </head>
 <body style='background-color: #b5dee9;'>
+
 <div class="form-container">
     <h2>Gestión de Tatuadores</h2>
     <a href="admin_dashboard.php" class="btn">Volver al Panel de Administración</a>
 </div>
 
-    <form method="POST">
-        <!-- Formulario para agregar/editar tatuador -->
-        <input type="text" name="nombre" placeholder="Nombre" required>
-        <input type="text" name="telefono" placeholder="Teléfono" required>
-        <input type="text" name="especialidad" placeholder="Especialidad" required>
-        <button type="submit">Guardar Tatuador</button>
-    </form>
+<form method="POST">
+    <!-- Formulario para agregar/editar tatuador -->
+    <input type="text" name="nombre" placeholder="Nombre" required>
+    <input type="tel" name="telefono" placeholder="Teléfono" required pattern="[0-9]{8}" title="Solo se permiten números (8 dígitos)">
+    
+    <label for="especialidad">Especialidad:</label>
+    <select name="especialidad" required>
+        <option value="">Seleccione Especialidad</option>
+        <option value="Realista">Realista</option>
+        <option value="BlackWork">BlackWork</option>
+        <option value="Microrealismo">Microrealismo</option>
+        <option value="Gótico">Gótico</option>
+    </select>
 
-    <h3>Lista de Tatuadores</h3>
-    <table>
-        <thead>
+    <button type="submit">Guardar Tatuador</button>
+</form>
+
+<h3>Lista de Tatuadores</h3>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Especialidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php while ($row = $result->fetch_assoc()): ?>
             <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Especialidad</th>
-                <th>Acciones</th>
+                <td><?php echo $row['id_tar']; ?></td>
+                <td><?php echo $row['nombre']; ?></td>
+                <td><?php echo $row['telefono']; ?></td>
+                <td><?php echo $row['especialidad']; ?></td>
+                <td>
+                    <a href="editar_tatuadores.php?id=<?php echo $row['id_tar']; ?>">Editar</a>
+                    <a href="tatuadores.php?delete_id=<?php echo $row['id_tar']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este tatuador?');">Eliminar</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['id_tar']; ?></td>
-                    <td><?php echo $row['nombre']; ?></td>
-                    <td><?php echo $row['telefono']; ?></td>
-                    <td><?php echo $row['especialidad']; ?></td>
-                    <td>
-                        <a href="editar_tatuadores.php?id=<?php echo $row['id_tar']; ?>">Editar</a>
-                        <a href="tatuadores.php?delete_id=<?php echo $row['id_tar']; ?>" onclick="return confirm('¿Estás seguro de que deseas eliminar este tatuador?');">Eliminar</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
+        <?php endwhile; ?>
+    </tbody>
+</table>
+
 </body>
 </html>

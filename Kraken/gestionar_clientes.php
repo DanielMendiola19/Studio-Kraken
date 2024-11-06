@@ -5,20 +5,37 @@ include 'connection.php';
 // Manejo de la eliminación de cliente
 if (isset($_GET['delete_id'])) {
     $id_cliente_a_eliminar = $_GET['delete_id'];
-    $sql_eliminar_cliente = "DELETE FROM cliente WHERE id = '$id_cliente_a_eliminar'";
-    if ($conn->query($sql_eliminar_cliente) === TRUE) {
-        echo "<script>alert('Cliente eliminado correctamente.'); window.location.href='gestionar_clientes.php';</script>";
+
+    // Primero, eliminar los pagos asociados a las citas del cliente
+    $sql_eliminar_pagos = "DELETE FROM pago WHERE cia_id_cia IN (SELECT id_cia FROM cita WHERE cle_id = '$id_cliente_a_eliminar')";
+    if ($conn->query($sql_eliminar_pagos) === TRUE) {
+
+        // Luego, eliminar las citas asociadas al cliente
+        $sql_eliminar_citas = "DELETE FROM cita WHERE cle_id = '$id_cliente_a_eliminar'";
+        if ($conn->query($sql_eliminar_citas) === TRUE) {
+
+            // Finalmente, eliminar el cliente
+            $sql_eliminar_cliente = "DELETE FROM cliente WHERE id = '$id_cliente_a_eliminar'";
+            if ($conn->query($sql_eliminar_cliente) === TRUE) {
+                echo "<script>alert('Cliente eliminado correctamente.'); window.location.href='gestionar_clientes.php';</script>";
+            } else {
+                echo "Error al eliminar el cliente: " . $conn->error;
+            }
+        } else {
+            echo "Error al eliminar las citas: " . $conn->error;
+        }
     } else {
-        echo "Error al eliminar el cliente: " . $conn->error;
+        echo "Error al eliminar los pagos: " . $conn->error;
     }
 }
+
 
 // Manejo de la inserción de datos
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre_cliente = $_POST['nombre_cliente'];
     $numero_de_celular = $_POST['numero_de_celular'];
     $carnet_de_identidad = $_POST['carnet_de_identidad'];
-    $edad = $_POST['edad'];
+    $fecha_nacimiento = $_POST['fecha_nacimiento'];  // Usamos fecha de nacimiento en vez de edad
     $enfermedades = $_POST['enfermedades'];
 
     // Datos del historial médico
@@ -29,6 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Datos del historial de tatuajes
     $fecha_realizacion_tatuaje = $_POST['fecha_realizacion_tatuaje'];
     $descripcion_del_tatuaje = $_POST['descripcion_del_tatuaje'];
+
+    // Calcular la edad
+    $fecha_nacimiento = new DateTime($fecha_nacimiento);
+    $hoy = new DateTime();
+    $edad = $hoy->diff($fecha_nacimiento)->y;
 
     // Insertar en la tabla cliente
     $sql_cliente = "INSERT INTO cliente (nombre, numero_de_celular, carnet_de_identidad, edad, enfermedades)
@@ -136,25 +158,30 @@ $result_clientes = $conn->query($sql_clientes);
             <label for="carnet_de_identidad">Carnet de Identidad:</label>
             <input type="number" id="carnet_de_identidad" name="carnet_de_identidad" placeholder="Ingrese el CI del cliente" required>
 
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" placeholder="Ingrese la edad" required>
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required onchange="calcularEdad()">
 
-            <label for="enfermedades">¿Tiene enfermedades? (S/N):</label>
-            <input type="text" id="enfermedades" name="enfermedades" maxlength="1" placeholder="S o N" required>
+            <label for="enfermedades">¿Tiene enfermedades?</label>
+            <select id="enfermedades" name="enfermedades" required onchange="mostrarHistorialMedico()">
+                <option value="No">No</option>
+                <option value="Sí">Sí</option>
+            </select>
 
-            <h2>Historial Médico</h2>
-            <label for="detalle_problemas">Detalle de Problemas de Salud:</label>
-            <textarea id="detalle_problemas" name="detalle_problemas" placeholder="Describa los problemas de salud" required></textarea>
+            <div id="historial_medico" style="display: none;">
+                <h2>Historial Médico</h2>
+                <label for="detalle_problemas">Detalle de Problemas de Salud:</label>
+                <textarea id="detalle_problemas" name="detalle_problemas" placeholder="Describa los problemas de salud"></textarea>
 
-            <label for="detalle_alergias">Detalle de Alergias:</label>
-            <textarea id="detalle_alergias" name="detalle_alergias" placeholder="Describa las alergias" required></textarea>
+                <label for="detalle_alergias">Detalle de Alergias:</label>
+                <textarea id="detalle_alergias" name="detalle_alergias" placeholder="Describa las alergias"></textarea>
 
-            <label for="fecha_registro_medico">Fecha de Registro:</label>
-            <input type="date" id="fecha_registro_medico" name="fecha_registro_medico" required>
+                <label for="fecha_registro_medico">Fecha de Registro:</label>
+                <input type="date" id="fecha_registro_medico" name="fecha_registro_medico">
+            </div>
 
             <h2>Historial de Tatuajes</h2>
             <label for="fecha_realizacion_tatuaje">Fecha de Realización:</label>
-            <input type="date" id="fecha_realizacion_tatuaje" name="fecha_realizacion_tatuaje" required>
+            <input type="date" id="fecha_realizacion_tatuaje" name="fecha_realizacion_tatuaje">
 
             <label for="descripcion_del_tatuaje">Descripción del Tatuaje:</label>
             <textarea id="descripcion_del_tatuaje" name="descripcion_del_tatuaje" placeholder="Describa el tatuaje realizado"></textarea>
@@ -193,8 +220,28 @@ $result_clientes = $conn->query($sql_clientes);
             <?php endwhile; ?>
         </tbody>
     </table>
+
+    <script>
+        function calcularEdad() {
+            const fechaNacimiento = new Date(document.getElementById('fecha_nacimiento').value);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+            const m = hoy.getMonth() - fechaNacimiento.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+                edad--;
+            }
+            document.getElementById('edad').value = edad;
+        }
+
+        function mostrarHistorialMedico() {
+            const enfermedades = document.getElementById('enfermedades').value;
+            const historialMedico = document.getElementById('historial_medico');
+            if (enfermedades === 'Sí') {
+                historialMedico.style.display = 'block';
+            } else {
+                historialMedico.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
-
-
-
