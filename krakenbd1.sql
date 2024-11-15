@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2024 a las 17:53:28
+-- Tiempo de generación: 06-11-2024 a las 06:51:26
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `cita` (
 
 INSERT INTO `cita` (`id_cia`, `cle_id`, `tar_id_tar`, `fecha_y_hora`, `estado`) VALUES
 (2, 1, 1, '2024-11-16 11:30:00', 'Realizado'),
-(3, 3, 1, '2024-11-19 12:34:00', 'Pendiente');
+(6, 29, 3, '2024-11-22 20:57:00', 'Pendiente'),
+(7, 30, 3, '2024-11-29 01:20:00', 'Pendiente');
 
 -- --------------------------------------------------------
 
@@ -50,7 +51,7 @@ INSERT INTO `cita` (`id_cia`, `cle_id`, `tar_id_tar`, `fecha_y_hora`, `estado`) 
 --
 
 CREATE TABLE `cliente` (
-  `id` int(10) NOT NULL,
+  `id` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `numero_de_celular` int(8) NOT NULL,
   `carnet_de_identidad` int(8) NOT NULL,
@@ -66,7 +67,8 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`id`, `nombre`, `numero_de_celular`, `carnet_de_identidad`, `edad`, `enfermedades`, `historial_medico_id_hm`, `historial_tat_id_historial`) VALUES
 (1, 'Leandro', 75698669, 234233, 19, 'S', 1, 1),
-(3, 'Daniel', 72058890, 8956326, 25, 'N', 0, 0);
+(29, 'Daniel', 72058890, 784563652, 19, 'No', 0, 0),
+(30, 'Scharick', 123423, 3232323, 18, 'Sí', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -75,7 +77,7 @@ INSERT INTO `cliente` (`id`, `nombre`, `numero_de_celular`, `carnet_de_identidad
 --
 
 CREATE TABLE `historial_de_tatuajes` (
-  `tae_id_tat` int(10) NOT NULL,
+  `tae_id_tat` int(11) NOT NULL,
   `id_historial` int(10) NOT NULL,
   `fecha_de_realizacion` date NOT NULL,
   `descripcion_del_tae` blob DEFAULT NULL
@@ -88,7 +90,21 @@ CREATE TABLE `historial_de_tatuajes` (
 INSERT INTO `historial_de_tatuajes` (`tae_id_tat`, `id_historial`, `fecha_de_realizacion`, `descripcion_del_tae`) VALUES
 (1, 0, '2024-10-24', 0x657763776563776563),
 (2, 6, '2024-11-07', 0x4153415341),
-(3, 7, '2024-11-05', 0x506572726f);
+(3, 7, '2024-11-05', 0x506572726f),
+(17, 8, '2024-11-21', 0x73617361),
+(24, 9, '2024-11-21', 0x73617361),
+(25, 0, '2024-11-21', 0x73617361),
+(26, 0, '2024-11-21', 0x73617361),
+(27, 0, '2024-11-21', 0x73617361),
+(29, 10, '2024-11-21', 0x73617361),
+(30, 11, '2024-11-14', 0x7361736173),
+(31, 12, '2024-11-06', 0x736173617361),
+(32, 13, '2024-11-06', 0x736173617361),
+(33, 14, '2024-11-06', 0x736173617361736173617361),
+(34, 15, '2024-11-06', 0x736173617361736173617361),
+(35, 16, '2024-11-06', 0x736173617361736173617361),
+(36, 17, '2024-11-06', 0x7361736173),
+(37, 18, '2024-11-06', 0x7361736173);
 
 -- --------------------------------------------------------
 
@@ -97,7 +113,7 @@ INSERT INTO `historial_de_tatuajes` (`tae_id_tat`, `id_historial`, `fecha_de_rea
 --
 
 CREATE TABLE `historial_medico` (
-  `id_hm` int(10) NOT NULL,
+  `id_hm` int(11) NOT NULL,
   `detalle_de_problemas_de_salud` varchar(100) NOT NULL,
   `detalle_de_alergia` varchar(100) NOT NULL,
   `fecha_de_registro` date NOT NULL,
@@ -109,9 +125,19 @@ CREATE TABLE `historial_medico` (
 --
 
 INSERT INTO `historial_medico` (`id_hm`, `detalle_de_problemas_de_salud`, `detalle_de_alergia`, `fecha_de_registro`, `cle_id`) VALUES
-(1, 'dwewccw', 'cwewcwec', '2024-10-19', 0),
 (6, 'ASSA', 'SASASA', '2024-11-03', 2),
-(7, 'No hay', 'N/A', '2024-11-03', 3);
+(7, 'No hay', 'N/A', '2024-11-03', 3),
+(8, '', '', '0000-00-00', 17),
+(9, '', '', '0000-00-00', 24),
+(10, '', '', '0000-00-00', 29),
+(11, 'sasasa', 'sassasa', '2024-11-15', 30),
+(12, '', '', '0000-00-00', 31),
+(13, '', '', '0000-00-00', 32),
+(14, '', '', '0000-00-00', 33),
+(15, '', '', '0000-00-00', 34),
+(16, '', '', '0000-00-00', 35),
+(17, '', '', '0000-00-00', 36),
+(18, '', '', '0000-00-00', 37);
 
 -- --------------------------------------------------------
 
@@ -175,17 +201,19 @@ CREATE TABLE `pago` (
   `cita_id` int(10) DEFAULT NULL,
   `id_pao` int(10) NOT NULL,
   `monto` decimal(10,2) NOT NULL,
-  `fecha` date NOT NULL,
+  `fecha` datetime DEFAULT current_timestamp(),
   `metodo_de_pao` varchar(50) NOT NULL,
-  `cia_id_cia` int(10) DEFAULT NULL
+  `cia_id_cia` int(10) DEFAULT NULL,
+  `servicio_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `pago`
 --
 
-INSERT INTO `pago` (`cita_id`, `id_pao`, `monto`, `fecha`, `metodo_de_pao`, `cia_id_cia`) VALUES
-(NULL, 8, 300.00, '0000-00-00', 'QR', 3);
+INSERT INTO `pago` (`cita_id`, `id_pao`, `monto`, `fecha`, `metodo_de_pao`, `cia_id_cia`, `servicio_id`) VALUES
+(NULL, 18, 78.00, '2024-11-06 01:50:33', 'QR', 7, 5),
+(NULL, 19, 150.00, '2024-11-06 01:50:48', 'Tarjeta', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -205,7 +233,10 @@ CREATE TABLE `servicio` (
 --
 
 INSERT INTO `servicio` (`id_seo`, `descripcion`, `precio`, `tipo_de_seo`) VALUES
-(1, 'Tatuaje de diseño personalizado de 30 cm', 150.00, 'Diseño');
+(1, 'Tatuaje de diseño personalizado de 30 cm', 150.00, 'Diseño'),
+(3, 'Tatto de Perro', 100.00, ''),
+(4, 'Tatuaje de 5 cm', 80.00, ''),
+(5, 'Tatuaje de Payaso', 78.00, '');
 
 -- --------------------------------------------------------
 
@@ -225,7 +256,8 @@ CREATE TABLE `tatuador` (
 --
 
 INSERT INTO `tatuador` (`id_tar`, `nombre`, `telefono`, `especialidad`) VALUES
-(1, 'Daniel Mendiola', 72055890, 'Realismo');
+(1, 'Daniel Mendiola', 72055890, 'Realismo'),
+(3, 'Yasira Herrera', 78451552, 'Realista');
 
 -- --------------------------------------------------------
 
@@ -277,7 +309,8 @@ CREATE TABLE `tipo_de_material` (
 --
 
 INSERT INTO `tipo_de_material` (`id_material`, `nombre`, `tipo`, `descripcion`) VALUES
-(1, 'Daniel', 'Tintas', '15 unidades');
+(5, 'Yasira Herrera', 'Guantes', '3 unidades'),
+(6, 'Daniel Mendiola', 'Vaselina', '5 unidades');
 
 -- --------------------------------------------------------
 
@@ -317,8 +350,7 @@ ALTER TABLE `cita`
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `historial_medico_id_hm` (`historial_medico_id_hm`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `historial_de_tatuajes`
@@ -364,7 +396,8 @@ ALTER TABLE `material_tatuador`
 --
 ALTER TABLE `pago`
   ADD PRIMARY KEY (`id_pao`),
-  ADD KEY `cle_id` (`cita_id`);
+  ADD KEY `cle_id` (`cita_id`),
+  ADD KEY `pago_ibfk_1` (`cia_id_cia`);
 
 --
 -- Indices de la tabla `servicio`
@@ -407,25 +440,25 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `cita`
 --
 ALTER TABLE `cita`
-  MODIFY `id_cia` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_cia` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_de_tatuajes`
 --
 ALTER TABLE `historial_de_tatuajes`
-  MODIFY `tae_id_tat` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tae_id_tat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_medico`
 --
 ALTER TABLE `historial_medico`
-  MODIFY `id_hm` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_hm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `lote_fecha_vencimiento`
@@ -437,19 +470,19 @@ ALTER TABLE `lote_fecha_vencimiento`
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id_pao` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_pao` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `servicio`
 --
 ALTER TABLE `servicio`
-  MODIFY `id_seo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_seo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tatuador`
 --
 ALTER TABLE `tatuador`
-  MODIFY `id_tar` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_tar` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tatuaje`
@@ -461,7 +494,7 @@ ALTER TABLE `tatuaje`
 -- AUTO_INCREMENT de la tabla `tipo_de_material`
 --
 ALTER TABLE `tipo_de_material`
-  MODIFY `id_material` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_material` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -477,7 +510,7 @@ ALTER TABLE `usuarios`
 -- Filtros para la tabla `cita`
 --
 ALTER TABLE `cita`
-  ADD CONSTRAINT `cita_ibfk_1` FOREIGN KEY (`cle_id`) REFERENCES `cliente` (`id`),
+  ADD CONSTRAINT `cita_ibfk_1` FOREIGN KEY (`cle_id`) REFERENCES `cliente` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cita_ibfk_2` FOREIGN KEY (`tar_id_tar`) REFERENCES `tatuador` (`id_tar`);
 
 --
@@ -498,6 +531,13 @@ ALTER TABLE `lotes_de_salida`
 ALTER TABLE `material_tatuador`
   ADD CONSTRAINT `material_tatuador_ibfk_1` FOREIGN KEY (`tatuador_id_tar`) REFERENCES `tatuador` (`id_tar`),
   ADD CONSTRAINT `material_tatuador_ibfk_2` FOREIGN KEY (`tipo_de_material_id`) REFERENCES `tipo_de_material` (`id_material`);
+
+--
+-- Filtros para la tabla `pago`
+--
+ALTER TABLE `pago`
+  ADD CONSTRAINT `pago_ibfk_1` FOREIGN KEY (`cia_id_cia`) REFERENCES `cita` (`id_cia`) ON DELETE CASCADE,
+  ADD CONSTRAINT `pago_ibfk_2` FOREIGN KEY (`cita_id`) REFERENCES `cliente` (`id`);
 
 --
 -- Filtros para la tabla `tatuaje`
