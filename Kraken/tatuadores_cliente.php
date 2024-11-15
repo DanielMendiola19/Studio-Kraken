@@ -29,15 +29,15 @@
 <main>
     <h2>Nuestros Tatuadores</h2>
     <div class="seccion">
-        <h3>Juan Pérez - Administrador y Tatuador</h3>
-        <img src="recursos/tatuador1.jpg" alt="Juan Pérez" class="imgUbicacion">
-        <p>Juan es el fundador del estudio con 15 años de experiencia en tatuajes de realismo y diseños personalizados.</p>
+        <h3>Cossio Duran - Administrador y Tatuador</h3>
+        <img src="recursos/tatuador4.jpg" alt="Canty Cossio" class="imgUbicacion">
+        <p>Canty Cossio es el fundador del estudio con 10 años de experiencia en tatuajes de realismo y diseños personalizados.</p>
     </div>
     
     <div class="seccion">
-        <h3>Maria Gómez - Recepcionista y Tatuadora en Práctica</h3>
-        <img src="recursos/tatuador2.jpg" alt="Maria Gómez" class="imgUbicacion">
-        <p>Maria no solo recibe a nuestros clientes, también está desarrollando su habilidad en tatuajes de líneas finas.</p>
+        <h3>Leandro Bolaños - Recepcionista y Tatuador en Práctica</h3>
+        <img src="recursos/tatuador5.jpg" alt="LBZ" class="imgUbicacion">
+        <p>LBZ no solo recibe a nuestros clientes, también está desarrollando su habilidad en tatuajes de líneas finas.</p>
     </div>
     
     <div class="seccion">

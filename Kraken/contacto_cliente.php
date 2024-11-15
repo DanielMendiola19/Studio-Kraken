@@ -47,23 +47,20 @@
     <h2>Contacto</h2>
     <p>Puedes comunicarte con nosotros a través de los siguientes medios:</p>
     <ul>
-        <li>Teléfono: +591 123 456 789</li>
-        <li>Email: contacto@krakentattoo.com</li>
+        <li>Teléfono: +591 7054825</li>
+        <li>Email: cantykraken@gmail.com</li>
     </ul>
     
     <!-- Redes Sociales -->
     <div class="social-icons">
-        <a href="https://www.facebook.com/krakentattoo">
+        <a href="https://www.facebook.com/joseernesto.cossioduran">
             <i class="fab fa-facebook"></i>
         </a>
-        <a href="https://instagram.com/krakentattoo">
+        <a href="https://instagram.com/canty.tattoo?igsh=Mzk3ZXA2cDVhYnNk">
             <i class="fab fa-instagram"></i>
         </a>
-        <a href="https://wa.me/591123456789">
+        <a href="https://chat.whatsapp.com/ECirMpc6Qa4JzZIsnnC2zW">
             <i class="fab fa-whatsapp"></i>
-        </a>
-        <a href="https://x.com/krakentattoo">
-            <i class="fab fa-x-twitter"></i>
         </a>
     </div>
 </main>
