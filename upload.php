@@ -5,50 +5,34 @@ include 'connection.php';
 // Inicializar una variable para mostrar mensajes
 $message = '';
 
-// Obtener la cantidad de imágenes en la tabla
-$sql = "SELECT COUNT(*) FROM tatuaje";
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$result = $stmt->get_result();
-$row = $result->fetch_row();
-$totalImages = $row[0];
-echo 'Total de registros: '. $totalImages;
-
-// Validar el límite de archivos permitidos en la base de datos
-if ($totalImages < 15) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['userImage'])) {
-        if (is_uploaded_file($_FILES['userImage']['tmp_name'])) {
-            $imgData = file_get_contents($_FILES['userImage']['tmp_name']);
-            $seo_id_seo = 1; 
-            $tatuador_id_tar = 1;
+// Verificar si se han enviado archivos
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['userImage'])) {
+    if (is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+        $imgData = file_get_contents($_FILES['userImage']['tmp_name']);
+        $seo_id_seo = 1; 
+        $tatuador_id_tar = 1;
+    
+        // Preparar la consulta
+        $sql = "INSERT INTO tatuaje (foto_del_diseño, seo_id_seo, tar_id_tar) VALUES (?, ?, ?)";
+        $statement = $conn->prepare($sql);
+        $statement->bind_param('bii', $null, $seo_id_seo, $tatuador_id_tar);
+    
+        // Enviar los datos BLOB manualmente
+        $statement->send_long_data(0, $imgData); // Índice 0 porque es el primer parámetro
         
-            // Preparar la consulta
-            $sql = "INSERT INTO tatuaje (foto_del_diseño, seo_id_seo, tar_id_tar) VALUES (?, ?, ?)";
-            $statement = $conn->prepare($sql);
-            $statement->bind_param('bii', $null, $seo_id_seo, $tatuador_id_tar);
-        
-            // Enviar los datos BLOB manualmente
-            $statement->send_long_data(0, $imgData); // Índice 0 porque es el primer parámetro
-            
-            // Ejecutar la consulta
-            if ($statement->execute()) {
-                $message = "Imagen subida exitosamente.";
-            } else {
-                $message = "Error al subir la imagen: " . $statement->error;
-            }
-            $statement->close();
-            // Redirigir después de procesar el formulario
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
+        // Ejecutar la consulta
+        if ($statement->execute()) {
+            $message = "Imagen subida exitosamente.";
+        } else {
+            $message = "Error al subir la imagen: " . $statement->error;
         }
-        
-    }else{
-        $message = "Lo siento, hubo un error al subir tu archivo.";
+        $statement->close();
+        // Redirigir después de procesar el formulario
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
     }
-} else {
-    echo "<div style='text-align: center; padding: 30px 0 10px 0; font-size: 20px; color: #c0392b'>
-    Se ha alcanzado el límite de archivos permitidos. No se permiten más subidas.</div>";
-}
+    
+} 
 
 // Cerrar la conexión al final del archivo
 $conn->close();
