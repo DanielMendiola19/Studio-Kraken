@@ -7,32 +7,38 @@ $message = '';
 
 // Verificar si se han enviado archivos
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['userImage'])) {
+    // Verificar si el archivo se sube correctamente
     if (is_uploaded_file($_FILES['userImage']['tmp_name'])) {
+        // Cargar la imagen en la base de datos
         $imgData = file_get_contents($_FILES['userImage']['tmp_name']);
         $seo_id_seo = 1; 
         $tatuador_id_tar = 1;
-    
+
         // Preparar la consulta
         $sql = "INSERT INTO tatuaje (foto_del_diseño, seo_id_seo, tar_id_tar) VALUES (?, ?, ?)";
         $statement = $conn->prepare($sql);
         $statement->bind_param('bii', $null, $seo_id_seo, $tatuador_id_tar);
-    
+
         // Enviar los datos BLOB manualmente
         $statement->send_long_data(0, $imgData); // Índice 0 porque es el primer parámetro
         
         // Ejecutar la consulta
         if ($statement->execute()) {
+            // Mostrar mensaje de éxito
             $message = "Imagen subida exitosamente.";
         } else {
+            // Mostrar mensaje de error
             $message = "Error al subir la imagen: " . $statement->error;
         }
         $statement->close();
         // Redirigir después de procesar el formulario
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
+    } else {
+        // Si no hay archivo o hubo un problema con el archivo
+        $message = "Lo siento, hubo un error al subir tu archivo.";
     }
-    
-} 
+}
 
 // Cerrar la conexión al final del archivo
 $conn->close();
@@ -62,6 +68,8 @@ $conn->close();
 <body>
     <div class="container mt-5">
         <h2>Subir Imagen</h2>
+        
+        <!-- Mostrar mensaje si hay -->
         <?php if ($message): ?>
             <div class="alert alert-info"><?php echo $message; ?></div>
         <?php endif; ?>
