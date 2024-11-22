@@ -1,0 +1,377 @@
+/* Configuración base */
+body {
+    background-color: #f4f4f2; /* Fondo general claro */
+    font-family: Arial, sans-serif;
+    color: #191013; /* Texto principal oscuro */
+}
+html {
+    scroll-behavior: smooth;
+}
+
+/* Estilo del encabezado */
+header {
+    background-color: #243a69; /* Azul oscuro */
+    color: #f4f4f2; /* Texto claro */
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+header img {
+    max-width: 100px;
+    border-radius: 50%; /* Logo en forma circular */
+}
+
+/* Navbar */
+.navbar {
+    background-color: #5b88a5; /* Azul suave */
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #f4f4f2; /* Texto claro */
+}
+
+.navbar-brand:hover {
+    color: #191013; /* Oscuro para hover */
+}
+
+.nav-link {
+    color: #f4f4f2;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #243a69; /* Azul más oscuro */
+    color: #f4f4f2;
+    border-radius: 5px;
+}
+
+/* Contenido principal */
+main {
+    padding: 40px 20px;
+}
+
+main h2 {
+    color: #243a69; /* Azul oscuro */
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.card {
+    background-color: #ffffff; /* Fondo blanco de tarjetas */
+    border: 1px solid #5b88a5; /* Borde azul suave */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card h3 {
+    color: #243a69; /* Azul oscuro */
+}
+
+.card p {
+    color: #191013; /* Texto principal */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Efecto hover */
+}
+
+/* Botones */
+.btn-outline-light {
+    border: 1px solid #5b88a5; /* Borde azul */
+    color: #5b88a5;
+    transition: all 0.3s;
+}
+
+.btn-outline-light:hover {
+    background-color: #5b88a5; /* Fondo azul */
+    color: #f4f4f2; /* Texto blanco */
+}
+
+/* Pie de página */
+footer {
+    background-color: #243a69; /* Azul oscuro */
+    color: #f4f4f2;
+    padding: 20px;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+footer .social-icons i {
+    color: #5b88a5; /* Azul suave */
+    font-size: 2rem;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+footer .social-icons i:hover {
+    color: #f4f4f2; /* Blanco al pasar el cursor */
+}
+
+/* Estilo específico para la imagen de ubicación */
+.imgUbicacion {
+    width: calc(100% - 22px); /* Ajuste similar a los inputs */
+    max-width: 100%; /* No superar el tamaño del contenedor */
+    border-radius: 3px; /* Borde redondeado similar */
+    margin-top: 10px; /* Espacio superior */
+}
+
+/* Estilo de imagen personalizada */
+.custom-img {
+    object-fit: contain; /* Ajustar la imagen sin recortarla */
+    height: 500px; /* Tamaño del contenedor de las imágenes */
+    width: 100%; /* Asegurar que se mantenga dentro de los límites del contenedor */
+    border-radius: 10px;
+}
+
+/* Sección de galería */
+.gallery-section {
+    background-color: #f4f4f2;
+    padding: 40px 20px;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo para el carrusel */
+.carousel {
+    width: 100%; /* Ajusta el carrusel a la pantalla completa */
+    max-width: 1200px; /* Limita el tamaño máximo si es necesario */
+    margin: auto; /* Centra el carrusel */
+}
+
+/* Estilo del carrusel */
+.carousel-inner {
+    max-width: 100%;
+    max-height: 500px; /* Ajusta la altura máxima */
+    margin: auto;
+}
+
+.carousel-item img {
+    width: 100%; /* Ajuste completo del ancho */
+    height: 500px; /* Altura fija para el carrusel */
+    object-fit: contain; /* Muestra la imagen completa sin recortarla */
+}
+
+/* Estilo para las flechas del carrusel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #ffffff; /* Fondo blanco para un contraste más limpio */
+    border-radius: 70%; /* Bordes redondeados para un diseño más suave */
+    width: 50px; /* Tamaño adecuado para las flechas */
+    height: 50px; /* Igual al ancho para mantener la proporción */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: all 0.3s ease; /* Transición suave */
+}
+
+.carousel-control-prev-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 fill=%22none%22 stroke=%22%23243a69%22 stroke-width=%222%22 viewBox=%220 0 16 16%22%3E%3Cpath d=%22M11 1l-7 7 7 7%22/%3E%3C/svg%3E');
+    transform: scale(1.2); /* Aumenta el tamaño de la flecha */
+}
+
+.carousel-control-next-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22 fill=%22none%22 stroke=%22%23243a69%22 stroke-width=%222%22 viewBox=%220 0 16 16%22%3E%3Cpath d=%22M5 1l7 7-7 7%22/%3E%3C/svg%3E');
+    transform: scale(1.2); /* Aumenta el tamaño de la flecha */
+}
+
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: #d3ebfb; /* Fondo azul suave al pasar el ratón */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más intensa al pasar el ratón */
+}
+
+.carousel-control-prev-icon:focus,
+.carousel-control-next-icon:focus {
+    outline: none; /* Quitar el contorno predeterminado */
+    box-shadow: 0 0 0 2px #c5dbe9; /* Añadir contorno azul claro al enfoque */
+}
+
+/* Estilo de la barra de control (flechas) */
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: transparent; /* Fondo transparente para las flechas */
+    border: none; /* Eliminar el borde */
+    z-index: 1; /* Asegurar que las flechas se superpongan al contenido */
+}
+
+/* Diseño del login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    background: #f5f5f5;
+}
+
+.login-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+}
+
+.login-title {
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 20px 12px 40px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.input-group input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #0056b3;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+form p {
+    color: red;
+}
+
+/* Transición suave para enlaces */
+a {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+
+/* Estilo de la página de detalles de tatuaje */
+.tattoo-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tattoo-info p {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 10px 0;
+}
+
+.image-container {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
+img {
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.tattoo-details {
+    padding-left: 30px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+
+@media (max-width: 767px) {
+    .tattoo-details {
+        padding-left: 0;
+    }
+}
